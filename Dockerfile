@@ -30,14 +30,21 @@ RUN chmod +x /scripts/start.sh
 # Expose DayZ server ports
 # game
 EXPOSE 2302/udp
+EXPOSE 2302/tcp
 EXPOSE 2303/udp
+EXPOSE 2303/tcp
 EXPOSE 2304/udp
+EXPOSE 2304/tcp
 EXPOSE 2305/udp
+EXPOSE 2305/tcp
 # steam
 EXPOSE 8766/udp
+EXPOSE 8766/tcp
 EXPOSE 27016/udp
+EXPOSE 27016/tcp
 # rcon (preferred)
-EXPOSE 2310
+EXPOSE 2310/tcp
+EXPOSE 2310/udp
 
 # Set working directory to DayZ server directory
 WORKDIR $DAYZ_SERVER_DIR
