@@ -19,6 +19,7 @@ if [[ "$UPDATE_SERVER" == "true" ]]; then
     ln -s $DAYZ_SERVER_DIR/steamapps/workshop/content/221100/1564026768 $DAYZ_SERVER_DIR/1564026768
     ln -s $DAYZ_SERVER_DIR/steamapps/workshop/content/221100/2418079817 $DAYZ_SERVER_DIR/2418079817
     ln -s $DAYZ_SERVER_DIR/steamapps/workshop/content/221100/1559212036/keys/* $DAYZ_SERVER_DIR/keys/
+    ln -s $DAYZ_SERVER_DIR/steamapps/workshop/content/221100/2418079817/keys/* $DAYZ_SERVER_DIR/keys/
 fi
 echo "Starting DayZ server..."
 cd $DAYZ_SERVER_DIR
