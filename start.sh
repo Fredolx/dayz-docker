@@ -22,4 +22,4 @@ if [[ "$UPDATE_SERVER" == "true" ]]; then
 fi
 echo "Starting DayZ server..."
 cd $DAYZ_SERVER_DIR
-exec ./DayZServer -config=serverDZ.cfg -port=2301 "-mod=1559212036;1564026768;2418079817;" -BEpath=battleye -profiles=profiles -dologs -adminlog -netlog -freezecheck
+exec ./DayZServer -config=serverDZ.cfg -port=2302 "-mod=1559212036;1564026768;2418079817;" -BEpath=battleye -profiles=profiles -dologs -adminlog -netlog
