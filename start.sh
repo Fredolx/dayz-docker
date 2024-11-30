@@ -67,7 +67,7 @@ if [[ "$UPDATE_SERVER" == "true" ]]; then
 fi
 echo "Starting DayZ server..."
 if [ ! -f "$DAYZ_SERVER_DIR/DayZServer" ]; then
-    echo "Couldn't launch the Dayz Server. Please update your launch.env in config. If this is your first run, you need to set your steam credentials and update_server to true in launch.env to fetch the dedicated server files."
+    echo "Missing dedicated server files, please update launch.env to set your steam credentials and update_server to true"
     exit 1
 fi
 cd $DAYZ_SERVER_DIR
