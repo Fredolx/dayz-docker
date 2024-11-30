@@ -19,9 +19,13 @@ RUN apt-get update && \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
+RUN useradd -ms /bin/bash dayzuser
+
 # Create dirs
 RUN mkdir -p "$STEAMCMD_DIR" "$DAYZ_SERVER_DIR" "$CONFIG_DIR" "$PROFILES_DIR" "$STORAGE_DIR" "$EXAMPLES_DIR" "$SCRIPTS_DIR"
-
+RUN chown dayzuser:dayzuser "$STEAMCMD_DIR" "$DAYZ_SERVER_DIR" "$CONFIG_DIR" "$PROFILES_DIR" "$STORAGE_DIR" "$EXAMPLES_DIR" "$SCRIPTS_DIR"
+RUN chmod 770 "$STEAMCMD_DIR" "$DAYZ_SERVER_DIR" "$CONFIG_DIR" "$PROFILES_DIR" "$STORAGE_DIR" "$EXAMPLES_DIR" "$SCRIPTS_DIR"
+USER dayzuser
 # Download and install SteamCMD
 WORKDIR $STEAMCMD_DIR
 RUN curl -sSL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar -xz
