@@ -4,8 +4,11 @@ FROM debian:bookworm-slim
 # Set environment variables
 ENV STEAMCMD_DIR="/steamcmd" \
     DAYZ_SERVER_DIR="/dayzserver" \
-    STEAMAPPID="223350"
-
+    CONFIG_DIR="/data/config" \
+    PROFILES_DIR="/data/profiles" \
+    STORAGE_DIR="/data/storage" \
+    EXAMPLES_DIR="/examples" \
+    SCRIPTS_DIR="/scripts" 
 # Install dependencies
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -16,8 +19,8 @@ RUN apt-get update && \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# Create directories for SteamCMD and DayZ server
-RUN mkdir -p "$STEAMCMD_DIR" "$DAYZ_SERVER_DIR" /scripts
+# Create dirs
+RUN mkdir -p "$STEAMCMD_DIR" "$DAYZ_SERVER_DIR" "$CONFIG_DIR" "$PROFILES_DIR" "$STORAGE_DIR" "$EXAMPLES_DIR" "$SCRIPTS_DIR"
 
 # Download and install SteamCMD
 WORKDIR $STEAMCMD_DIR
