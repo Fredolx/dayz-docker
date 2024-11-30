@@ -66,7 +66,12 @@ if [[ "$UPDATE_SERVER" == "true" ]]; then
   done
 fi
 echo "Starting DayZ server..."
+if [ ! -f "$DAYZ_SERVER_DIR/DayZServer" ]; then
+    echo "Couldn't launch the Dayz Server. Please update your launch.env in config. If this is your first run, you need to set your steam credentials and update_server to true in launch.env to fetch the dedicated server files."
+    exit 1
+fi
 cd $DAYZ_SERVER_DIR
 if ! exec ./DayZServer -config=$CONFIG_DIR/serverDZ.cfg -port="$SERVER_PORT" ${DAYZ_MODS:+"-mod=$DAYZ_MODS"} -BEpath=battleye -profiles="$PROFILES_DIR" -storage="$STORAGE_DIR" -dologs -adminlog -netlog "$CUSTOM_FLAGS"; then
   echo "Couldn't launch the Dayz Server. Please update your launch.env in config. If this is your first run, you need to set your steam credentials and update_server to true in launch.env to fetch the dedicated server files."
+  exit 1
 fi
