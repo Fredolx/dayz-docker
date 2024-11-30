@@ -8,6 +8,11 @@ PROFILES_DIR="/data/profiles"
 STORAGE_DIR="/data/storage"
 EXAMPLES_DIR="/examples"
 
+if [ ! -d "$CONFIG_DIR" ] || [ ! -d "$PROFILES_DIR" ] || [ ! -d "$STORAGE_DIR" ]; then
+  echo "Creating data folders";
+  mkdir -p "$CONFIG_DIR" "$PROFILES_DIR" "$STORAGE_DIR"
+fi
+
 if [ ! -f "$CONFIG_DIR/launch.env" ]; then
   cp "$EXAMPLES_DIR/launch.env" "$CONFIG_DIR/"
 fi

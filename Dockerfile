@@ -4,10 +4,7 @@ FROM debian:bookworm-slim
 # Set environment variables
 ENV STEAMCMD_DIR="/steamcmd" \
     DAYZ_SERVER_DIR="/dayzserver" \
-    CONFIG_DIR="/data/config" \
     DATA_DIR="/data" \
-    PROFILES_DIR="/data/profiles" \
-    STORAGE_DIR="/data/storage" \
     EXAMPLES_DIR="/examples" \
     SCRIPTS_DIR="/scripts" 
 # Install dependencies
@@ -22,14 +19,14 @@ RUN apt-get update && \
 
 RUN useradd -ms /bin/bash dayzuser
 # Create dirs
-RUN mkdir -p "$DATA_DIR" "$STEAMCMD_DIR" "$DAYZ_SERVER_DIR" "$CONFIG_DIR" "$PROFILES_DIR" "$STORAGE_DIR" "$EXAMPLES_DIR" "$SCRIPTS_DIR"
+RUN mkdir -p "$DATA_DIR" "$STEAMCMD_DIR" "$DAYZ_SERVER_DIR" "$EXAMPLES_DIR" "$SCRIPTS_DIR"
 # Copy the start script into the image
 COPY start.sh /scripts/start.sh
 COPY example-launch.env /examples/launch.env
 COPY example-serverDZ.cfg /examples/serverDZ.cfg
 RUN chmod +x /scripts/start.sh
-RUN chown -R dayzuser:dayzuser "$DATA_DIR" "$STEAMCMD_DIR" "$DAYZ_SERVER_DIR" "$CONFIG_DIR" "$PROFILES_DIR" "$STORAGE_DIR" "$EXAMPLES_DIR" "$SCRIPTS_DIR"
-RUN chmod -R 770 "$DATA_DIR" "$STEAMCMD_DIR" "$DAYZ_SERVER_DIR" "$CONFIG_DIR" "$PROFILES_DIR" "$STORAGE_DIR" "$EXAMPLES_DIR" "$SCRIPTS_DIR"
+RUN chown -R dayzuser:dayzuser "$DATA_DIR" "$STEAMCMD_DIR" "$DAYZ_SERVER_DIR" "$EXAMPLES_DIR" "$SCRIPTS_DIR"
+RUN chmod -R 770 "$DATA_DIR" "$STEAMCMD_DIR" "$DAYZ_SERVER_DIR" "$EXAMPLES_DIR" "$SCRIPTS_DIR"
 USER dayzuser
 # Download and install SteamCMD
 WORKDIR $STEAMCMD_DIR
