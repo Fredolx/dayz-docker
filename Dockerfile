@@ -25,6 +25,8 @@ RUN curl -sSL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.t
 
 # Copy the start script into the image
 COPY start.sh /scripts/start.sh
+COPY example-launch.env /examples/launch.env
+COPY example-serverDZ.cfg /examples/serverDZ.cfg
 RUN chmod +x /scripts/start.sh
 
 # Expose DayZ server ports

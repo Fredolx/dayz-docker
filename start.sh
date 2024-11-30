@@ -3,22 +3,62 @@
 # Define directories
 STEAMCMD_DIR="/steamcmd"
 DAYZ_SERVER_DIR="/dayzserver"
+CONFIG_DIR="/data/config"
+PROFILES_DIR="/data/profiles"
+STORAGE_DIR="/data/storage"
+EXAMPLES_DIR="/examples"
+source $CONFIG_DIR/launch.env
 
-# Check if required environment variables are set
+if [ ! -f "$CONFIG_DIR/launch.env" ]; then
+  cp "$EXAMPLES_DIR/launch.env" "$CONFIG_DIR/"
+fi
 
+if [ ! -f "$CONFIG_DIR/serverDZ.cfg" ]; then
+  cp "$EXAMPLES_DIR/serverDZ.cfg" "$CONFIG_DIR/"
+fi
 
 if [[ "$UPDATE_SERVER" == "true" ]]; then
-    if [[ -z "$USERNAME" || -z "$PASSWORD" ]]; then
-      echo "Error: You must supply the SteamCMD login credentials."
-      echo "Set the USERNAME and PASSWORD environment variables."
-      exit 1
+  if [[ -z "$USERNAME" || -z "$PASSWORD" ]]; then
+    echo "Error: You must supply the SteamCMD login credentials."
+    echo "Set the USERNAME and PASSWORD environment variables."
+    exit 1
+  fi
+  echo "Updating DayZ server..."
+  DAYZ_MODS_TRIMMED="${DAYZ_MODS%;}"  # Removes the trailing semicolon
+  IFS=';' read -ra MOD_IDS <<<"$DAYZ_MODS_TRIMMED"
+  WORKSHOP_ITEMS=""
+  for MOD_ID in "${MOD_IDS[@]}"; do
+    WORKSHOP_ITEMS+=" +workshop_download_item $MOD_ID"
+  done
+
+  if ! $STEAMCMD_DIR/steamcmd.sh +force_install_dir $DAYZ_SERVER_DIR +login "$USERNAME" "$PASSWORD" "$STEAM_GUARD_CODE" +app_update 223350"$WORKSHOP_ITEMS" +quit; then
+    echo "SteamCMD update failed. Exiting."
+    exit 1
+  fi
+
+  MODS_FOLDER="$DAYZ_SERVER_DIR/steamapps/workshop/content/221100"
+  KEYS_TARGET_DIR="$DAYZ_SERVER_DIR/keys"
+  if [ ! -d "$KEYS_TARGET_DIR" ]; then
+    mkdir -p "$KEYS_TARGET_DIR"
+    echo "Created keys target directory: $KEYS_TARGET_DIR"
+  fi
+  for folder in "$MODS_FOLDER"/*; do
+    if [ -d "$folder" ]; then
+      folder_name=$(basename "$folder")
+      ln -s "$folder" "$DAYZ_SERVER_DIR/$folder_name"
+      echo "Created symlink: $DAYZ_SERVER_DIR/$folder_name -> $folder"
+      keys_dir="$folder/keys"
+      if [ -d "$keys_dir" ]; then
+        for key_file in "$keys_dir"/*; do
+          if [ -f "$key_file" ]; then
+            ln -s "$key_file" "$KEYS_TARGET_DIR/"
+            echo "Created symlink: $KEYS_TARGET_DIR/$(basename "$key_file") -> $key_file"
+          fi
+        done
+      fi
     fi
-    echo "Updating DayZ server..."
-    $STEAMCMD_DIR/steamcmd.sh +force_install_dir $DAYZ_SERVER_DIR +login $USERNAME $PASSWORD $CODE +app_update 223350 +workshop_download_item 221100 1559212036 +workshop_download_item 221100 1564026768 +quit
-    ln -s $DAYZ_SERVER_DIR/steamapps/workshop/content/221100/1559212036 $DAYZ_SERVER_DIR/1559212036
-    ln -s $DAYZ_SERVER_DIR/steamapps/workshop/content/221100/1564026768 $DAYZ_SERVER_DIR/1564026768
-    ln -s $DAYZ_SERVER_DIR/steamapps/workshop/content/221100/1559212036/keys/* $DAYZ_SERVER_DIR/keys/
+  done
 fi
 echo "Starting DayZ server..."
 cd $DAYZ_SERVER_DIR
-exec ./DayZServer -config=serverDZ.cfg -port=2302 "-mod=1559212036;1564026768;" -BEpath=battleye -profiles=profiles -dologs -adminlog -netlog
+exec ./DayZServer -config=$CONFIG_DIR/serverDZ.cfg -port="$SERVER_PORT" ${DAYZ_MODS:+"-mod=$DAYZ_MODS"} -BEpath=battleye -profiles="$PROFILES_DIR" -storage="$STORAGE_DIR" -dologs -adminlog -netlog "$CUSTOM_FLAGS"
