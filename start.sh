@@ -24,7 +24,7 @@ if [[ "$UPDATE_SERVER" == "true" ]]; then
     exit 1
   fi
   echo "Updating DayZ server..."
-  DAYZ_MODS_TRIMMED="${DAYZ_MODS%;}"  # Removes the trailing semicolon
+  DAYZ_MODS_TRIMMED="${DAYZ_MODS%;}" # Removes the trailing semicolon
   IFS=';' read -ra MOD_IDS <<<"$DAYZ_MODS_TRIMMED"
   WORKSHOP_ITEMS=""
   for MOD_ID in "${MOD_IDS[@]}"; do
@@ -61,4 +61,6 @@ if [[ "$UPDATE_SERVER" == "true" ]]; then
 fi
 echo "Starting DayZ server..."
 cd $DAYZ_SERVER_DIR
-exec ./DayZServer -config=$CONFIG_DIR/serverDZ.cfg -port="$SERVER_PORT" ${DAYZ_MODS:+"-mod=$DAYZ_MODS"} -BEpath=battleye -profiles="$PROFILES_DIR" -storage="$STORAGE_DIR" -dologs -adminlog -netlog "$CUSTOM_FLAGS"
+if ! exec ./DayZServer -config=$CONFIG_DIR/serverDZ.cfg -port="$SERVER_PORT" ${DAYZ_MODS:+"-mod=$DAYZ_MODS"} -BEpath=battleye -profiles="$PROFILES_DIR" -storage="$STORAGE_DIR" -dologs -adminlog -netlog "$CUSTOM_FLAGS"; then
+  echo "Couldn't launch the Dayz Server. Please update your launch.env in config. If this is your first run, you need to set your steam credentials and update_server to true in launch.env to fetch the dedicated server files."
+fi
