@@ -17,6 +17,7 @@ RUN apt-get update && \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
+RUN groupadd -g 1000 dayzuser
 RUN useradd -ms /bin/bash -u 1000 -g 1000 dayzuser
 # Create dirs
 RUN mkdir -p "$DATA_DIR" "$STEAMCMD_DIR" "$DAYZ_SERVER_DIR" "$EXAMPLES_DIR" "$SCRIPTS_DIR"
