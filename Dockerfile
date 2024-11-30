@@ -17,7 +17,7 @@ RUN apt-get update && \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-RUN useradd -ms /bin/bash dayzuser
+RUN useradd -ms /bin/bash -u 1000 -g 1000 dayzuser
 # Create dirs
 RUN mkdir -p "$DATA_DIR" "$STEAMCMD_DIR" "$DAYZ_SERVER_DIR" "$EXAMPLES_DIR" "$SCRIPTS_DIR"
 # Copy the start script into the image
@@ -25,7 +25,7 @@ COPY start.sh /scripts/start.sh
 COPY example-launch.env /examples/launch.env
 COPY example-serverDZ.cfg /examples/serverDZ.cfg
 RUN chmod +x /scripts/start.sh
-RUN chown -R dayzuser:dayzuser "$DATA_DIR" "$STEAMCMD_DIR" "$DAYZ_SERVER_DIR" "$EXAMPLES_DIR" "$SCRIPTS_DIR"
+RUN chown -R 1000:1000 "$DATA_DIR" "$STEAMCMD_DIR" "$DAYZ_SERVER_DIR" "$EXAMPLES_DIR" "$SCRIPTS_DIR"
 RUN chmod -R 770 "$DATA_DIR" "$STEAMCMD_DIR" "$DAYZ_SERVER_DIR" "$EXAMPLES_DIR" "$SCRIPTS_DIR"
 USER dayzuser
 # Download and install SteamCMD
