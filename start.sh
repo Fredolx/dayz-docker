@@ -7,7 +7,6 @@ CONFIG_DIR="/data/config"
 PROFILES_DIR="/data/profiles"
 STORAGE_DIR="/data/storage"
 EXAMPLES_DIR="/examples"
-source $CONFIG_DIR/launch.env
 
 if [ ! -f "$CONFIG_DIR/launch.env" ]; then
   cp "$EXAMPLES_DIR/launch.env" "$CONFIG_DIR/"
@@ -16,6 +15,8 @@ fi
 if [ ! -f "$CONFIG_DIR/serverDZ.cfg" ]; then
   cp "$EXAMPLES_DIR/serverDZ.cfg" "$CONFIG_DIR/"
 fi
+
+source $CONFIG_DIR/launch.env
 
 if [[ "$UPDATE_SERVER" == "true" ]]; then
   if [[ -z "$USERNAME" || -z "$PASSWORD" ]]; then
