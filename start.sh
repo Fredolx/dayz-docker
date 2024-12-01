@@ -34,7 +34,7 @@ if [[ "$UPDATE_SERVER" == "true" ]]; then
   IFS=';' read -ra MOD_IDS <<<"$DAYZ_MODS_TRIMMED"
   WORKSHOP_ITEMS=""
   for MOD_ID in "${MOD_IDS[@]}"; do
-    WORKSHOP_ITEMS+=" +workshop_download_item $MOD_ID"
+    WORKSHOP_ITEMS+=" +workshop_download_item 221100 $MOD_ID"
   done
 
   echo executing: $STEAMCMD_DIR/steamcmd.sh +force_install_dir "$DAYZ_SERVER_DIR" +login "$USERNAME" "$PASSWORD" "$STEAM_GUARD_CODE" +app_update 223350"$WORKSHOP_ITEMS" +quit
