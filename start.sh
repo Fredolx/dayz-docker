@@ -37,9 +37,9 @@ if [[ "$UPDATE_SERVER" == "true" ]]; then
     WORKSHOP_ITEMS+=" +workshop_download_item 221100 $MOD_ID"
   done
 
-  echo executing: $STEAMCMD_DIR/steamcmd.sh +force_install_dir "$DAYZ_SERVER_DIR" +login "$USERNAME" "$PASSWORD" "$STEAM_GUARD_CODE" +app_update 223350"$WORKSHOP_ITEMS" +quit
+  echo executing: $STEAMCMD_DIR/steamcmd.sh +force_install_dir "$DAYZ_SERVER_DIR" +login "$USERNAME" "$PASSWORD" "$STEAM_GUARD_CODE" +app_update 223350 $WORKSHOP_ITEMS +quit
 
-  if ! $STEAMCMD_DIR/steamcmd.sh +force_install_dir "$DAYZ_SERVER_DIR" +login "$USERNAME" "$PASSWORD" "$STEAM_GUARD_CODE" +app_update 223350"$WORKSHOP_ITEMS" +quit; then
+  if ! $STEAMCMD_DIR/steamcmd.sh +force_install_dir "$DAYZ_SERVER_DIR" +login "$USERNAME" "$PASSWORD" "$STEAM_GUARD_CODE" +app_update 223350 $WORKSHOP_ITEMS +quit; then
     echo "SteamCMD update failed. Exiting."
     exit 1
   fi
